@@ -2,16 +2,26 @@ from langchain_ollama.llms import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 from vector import retriever
 
-model = OllamaLLM(model="phi", streaming=True)
+model = OllamaLLM(model="phi", streaming=True, temperature=0.0, num_predict=400)
 
 template = """
-You are a Tavel Agency Company offering different tours and packages.
+You are a professional Tavel Agency guide offering different tours and packages.
 
 You MUST answer ONLY using the information provided in the context.
 If the context contains a table, read rows and columns carefully.
 Answer using exact values from the table.
+DO NOT:
+- invent new people
+- invent scenarios
+- create stories
+- add logic puzzles
+- introduce new questions
+- mention tours not in the context
+- speculate
+
 If the answer is not present in the context, reply exactly:
-"I don't know based on the provided recipe."
+"I don't know based on the provide data."
+Stop immediately after answering the question.
 
 You can reply in Hindi, English, or Hinglish.
 Use Hinglish if the user mixes languages.
@@ -38,10 +48,10 @@ while True:
         continue
 
     material = "\n\n".join(doc.page_content for doc in docs)
-    #print(material)
+    print("MATERIAL " , material)
     # material = retriever.invoke(question)   
     result = chain.invoke({"material":material,"question":question})
-    print(result)
+    print("RESPONSE: ", result)
 
 
 

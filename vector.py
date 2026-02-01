@@ -12,13 +12,33 @@ add_documents = not os.path.exists(db_location)
 
 
 if add_documents:
-    file_path = "travel_agency_sample_brochure.pdf"
-    loader = UnstructuredPDFLoader("travel_agency_sample_brochure.pdf")
+    file_path = "travel_agency_test_brochure.pdf"
+    loader = UnstructuredPDFLoader(
+    "travel_agency_test_brochure.pdf",
+    strategy="hi_res")
     documents = loader.load()
     #loader = PyPDFLoader(file_path)
     # documents = loader.load()
 
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
+    # # -----------------------
+    # # TABLE NORMALIZATION STEP 
+    # # -----------------------
+
+    # processed_docs = []
+
+    # for doc in documents:
+    #     text = doc.page_content
+
+    #     if "Day" in text and "City" in text and "Activities" in text:
+    #         text = text.replace("\n", " ")
+
+    #     processed_docs.append(
+    #         doc.copy(update={"page_content": text})
+    #     )
+
+    # documents = processed_docs
+
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=400, chunk_overlap=100)
     texts = text_splitter.split_documents(documents)
 
 vector_store = Chroma(
@@ -30,7 +50,7 @@ vector_store = Chroma(
 if add_documents:
     vector_store.add_documents(documents=texts)
 
-#print(vector_store._collection.count())
+print(vector_store._collection.count())
 
 peek = vector_store._collection.peek(3)
 #print(peek)
