@@ -77,4 +77,120 @@ The `vector.py` script handles PDF processing:
 
 ## Contributing
 Contributions are welcome! Feel free to open issues or pull requests for improvements, bug fixes, or new features.
+
+📘 README.md — RAG Travel Assistant with LangChain, Ollama & Chroma
+🌍 RAG Travel Assistant — PDF-Based Tour & Travel Chatbot
+
+This project is a Retrieval-Augmented Generation (RAG) chatbot that allows users to ask natural-language questions about travel agency brochures and tour packages stored in PDFs.
+
+## It supports:
+
+Multi-page brochures
+
+Day-wise itineraries
+
+Routes & destinations
+
+Pricing tables
+
+Hotel listings
+
+Inclusions / exclusions
+
+Policies & FAQs
+
+The system uses:
+
+LangChain for orchestration
+
+Ollama for local LLM inference
+
+ChromaDB for vector storage
+
+UnstructuredPDFLoader for PDF parsing
+
+Streamlit for the web UI
+
+## 🧠 Architecture Overview
+PDF Documents
+     ↓
+UnstructuredPDFLoader
+     ↓
+Table Normalization & Cleaning
+     ↓
+Chunking (400 tokens, overlap 50)
+     ↓
+Embeddings via Ollama
+     ↓
+Chroma Vector Database
+     ↓
+Retriever (Top-K semantic search)
+     ↓
+LLM + Strict Prompt
+     ↓
+Web UI (Streamlit)
+
+## ✨ Key Features
+## ✅ PDF Intelligence
+
+Supports complex multi-page brochures
+
+Extracts tables such as itineraries and pricing
+
+OCR-ready using Tesseract (optional)
+
+Normalizes tables into readable text before embedding
+
+## ✅ Table-Aware RAG
+
+Special preprocessing converts table rows into LLM-friendly text so the model can correctly answer:
+
+"What is the day-wise itinerary?"
+"Which city is visited on Day 3?"
+"What is the total cost for the Dubai tour?"
+
+## ✅ Hallucination Control
+
+To prevent creative drift:
+
+Temperature set to 0.0
+
+Output token limit (num_predict)
+
+Strict RAG prompt instructions
+
+Limited retrieval size (k=6–8)
+
+Forced refusal when data is missing
+
+## ✅ Web Interface
+
+Browser-based UI using Streamlit
+
+Ask & Reset buttons
+
+Loading spinner
+
+Cancel generation mid-response
+
+Retrieved-context viewer for debugging
   
+## Below are some of the test results
+
+
+<img width="979" height="580" alt="image" src="https://github.com/user-attachments/assets/8f58cd52-ead2-459b-936e-f520925aa46b" />
+
+<img width="979" height="505" alt="image" src="https://github.com/user-attachments/assets/b001792c-a5d1-4c4a-8f62-f7749d40c16c" />
+
+<img width="979" height="539" alt="image" src="https://github.com/user-attachments/assets/5ade9beb-e4aa-4f6b-b6fa-2ce7a657a5ba" />
+
+<img width="890" height="332" alt="image" src="https://github.com/user-attachments/assets/85853f5d-b62b-429e-8886-b603b1941706" />
+
+<img width="1184" height="698" alt="image" src="https://github.com/user-attachments/assets/c6057e59-4cae-40e6-8ae6-70afa8571191" />
+
+<img width="828" height="457" alt="image" src="https://github.com/user-attachments/assets/338c18b7-010d-4cbf-a110-0237b2f9e1e1" />
+
+
+
+
+
